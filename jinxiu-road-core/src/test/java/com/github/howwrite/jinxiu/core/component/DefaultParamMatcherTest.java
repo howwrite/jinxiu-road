@@ -44,12 +44,6 @@ public class DefaultParamMatcherTest {
         Assert.assertFalse(defaultParamMatcher.match(null, findMockClassType("listObject1"), new ValueMeta(null, findMockClassType("listInteger1"))));
     }
 
-    @Test
-    public void testError() {
-        // 测试github的单测能力
-        Assert.assertTrue(false);
-    }
-
     private Type findMockClassType(String fieldName) {
         Field[] declaredFields = MockClass.class.getDeclaredFields();
         for (Field declaredField : declaredFields) {
