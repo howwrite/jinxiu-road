@@ -3,12 +3,12 @@
 </h1>
 
 <h3 align="center">
-需要编排可灵活复用；无需编排则可极致加速。
+需要编排可灵活复用<br/>无需编排可极致加速
 </h3>
 
 ## 特点
 
-+ 编写流程节点时无需考虑其他，仅需考虑当前节点需要哪些入参以及节点会返回怎样的出参。至于节点入参的对象取值，会在生成流水线时根据前面节点的返回值类型决定（以及可以传入一个初始化对象表示整个流程最初的几个节点的入参）。
++ 编写流程节点时仅需考虑当前节点需要哪些入参以及节点会返回怎样的出参。具体取值通过
 + 流水线会根据流水线中节点的参数依赖关系生成依赖树，提供并行执行能力，使可以并行执行的节点并行执行。
 
 ## 核心思路
@@ -25,6 +25,6 @@
 + readme写的不行。
 + 节点前后依赖关系是通过参数来做的，并没有提供自定义调整的能力，预期是在创建pipelineMeta的时候可以声明依赖关系，但是没有想好怎么做。
 
-## Star history
+## Star History
 
-[![Star History Chart](https://star-history.com/#howwrite/jinxiu-road&Date)](https://star-history.com/#howwrite/jinxiu-road&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=howwrite/jinxiu-road&type=Date)](https://star-history.com/#howwrite/jinxiu-road&Date)

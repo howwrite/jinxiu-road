@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class NodeMetaFactory {
 
     private ParamSource buildParamSource(Parameter parameter, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas) {
         String paramName = buildParamName(parameter);
-        Class<?> paramType = parameter.getType();
+        Type paramType = parameter.getParameterizedType();
         for (int i = forwardReturnValueMetas.length - 1; i >= 0; i--) {
             if (forwardReturnValueMetas[i] != null && paramMatcher.match(paramName, paramType, forwardReturnValueMetas[i])) {
                 return new ForwardParamSource(i);
@@ -69,7 +70,7 @@ public class NodeMetaFactory {
         // 如果需要的是初始值的某个字段
         Field[] declaredFields = initValueType.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            if (paramMatcher.match(paramName, paramType, new ValueMeta(declaredField.getName(), declaredField.getType()))) {
+            if (paramMatcher.match(paramName, paramType, new ValueMeta(declaredField.getName(), declaredField.getGenericType()))) {
                 declaredField.setAccessible(true);
                 return new InitValueSource(declaredField);
             }

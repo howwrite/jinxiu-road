@@ -2,6 +2,8 @@ package com.github.howwrite.jinxiu.core.component;
 
 import com.github.howwrite.jinxiu.core.model.ValueMeta;
 
+import java.lang.reflect.Type;
+
 /**
  * 参数选择器
  */
@@ -15,5 +17,5 @@ public interface ParamMatcher {
      * @param providerValueMeta 提供的值元数据
      * @return 当前提供的值能否与所需的参数类型匹配
      */
-    boolean match(String needValueKey, Class<?> needValueType, ValueMeta providerValueMeta);
+    boolean match(String needValueKey, Type needValueType, ValueMeta providerValueMeta);
 }
