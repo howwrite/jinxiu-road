@@ -4,14 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.howwrite.jinxiu</groupId>
+    <groupId>com.github.howwrite</groupId>
     <artifactId>jinxiu-road</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <name>jinxiu-road</name>
+    <description>High performance workflow</description>
+    <url>https://github.com/howwrite/jinxiu-road</url>
+    <version>1.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>jinxiu-road-core</module>
         <module>jinxiu-road-spring</module>
     </modules>
+
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,7 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springboot.version>2.7.18</springboot.version>
         <junit.version>4.13.2</junit.version>
-        <jinxiu.version>1.0-SNAPSHOT</jinxiu.version>
+        <jinxiu.version>1.0</jinxiu.version>
     </properties>
     <dependencies>
         <dependency>
@@ -55,7 +59,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.github.howwrite.jinxiu</groupId>
+                <groupId>com.github.howwrite</groupId>
                 <artifactId>jinxiu-road-core</artifactId>
                 <version>${jinxiu.version}</version>
             </dependency>
@@ -79,12 +83,102 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <repositories>
-        <repository>
-            <id>maven_central</id>
-            <name>Maven Central</name>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>release</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>release</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/howwrite/jinxiu-road</url>
+        <connection>https://github.com/howwrite/jinxiu-road.git</connection>
+        <developerConnection>https://github.com/howwrite/</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>howwrite</name>
+            <email>xwmdream@qq.com</email>
+            <url>https://github.com/howwrite</url>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <additionalOptions>-Xdoclint:none</additionalOptions>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

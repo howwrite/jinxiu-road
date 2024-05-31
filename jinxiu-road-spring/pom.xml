@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.howwrite.jinxiu</groupId>
+        <groupId>com.github.howwrite</groupId>
         <artifactId>jinxiu-road</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <artifactId>jinxiu-road-spring</artifactId>
@@ -18,7 +18,7 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.github.howwrite.jinxiu</groupId>
+            <groupId>com.github.howwrite</groupId>
             <artifactId>jinxiu-road-core</artifactId>
         </dependency>
         <dependency>
