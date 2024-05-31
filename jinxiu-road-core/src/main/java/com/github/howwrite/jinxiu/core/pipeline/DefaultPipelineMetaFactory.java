@@ -46,7 +46,7 @@ public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
             throw new IllegalArgumentException("not found provider return value node");
         }
         int[] noParentNodeIndexList = buildNoParentNodeIndexList(nodeList);
-        return new PipelineMeta(pipelineName, nodeList, returnValueNodeIndex, noParentNodeIndexList);
+        return new PipelineMeta(pipelineName, nodeList, initValueType, returnValueNodeIndex, noParentNodeIndexList);
     }
 
     public int[] buildNoParentNodeIndexList(NodeMeta[] nodeList) {

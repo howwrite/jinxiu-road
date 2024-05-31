@@ -16,6 +16,11 @@ public class PipelineMeta {
     private final NodeMeta[] nodes;
 
     /**
+     * 初始值类型
+     */
+    private final Class<?> initValueType;
+
+    /**
      * 当前产生返回值的节点下标。
      * 执行结束后会将该节点的返回值作为流水线的返回值返回。
      */

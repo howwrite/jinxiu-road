@@ -1,8 +1,8 @@
 package com.github.howwrite.jinxiu.spring;
 
+import com.github.howwrite.jinxiu.core.executor.ASyncPipelineExecutor;
 import com.github.howwrite.jinxiu.core.executor.PipelineExecutorProvider;
 import com.github.howwrite.jinxiu.core.executor.SequentialPipelineExecutor;
-import com.github.howwrite.jinxiu.core.executor.SyncPipelineExecutor;
 import com.github.howwrite.jinxiu.core.model.PipelineMetaBuildParam;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMeta;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory;
@@ -61,8 +61,8 @@ public class TestConfiguration {
 
     @Bean
     public PipelineExecutorProvider autoSyncExecutorProvider(PipelineRuntimeFactory pipelineRuntimeFactory) {
-        SyncPipelineExecutor syncPipelineExecutor = new SyncPipelineExecutor(pipelineRuntimeFactory);
+        ASyncPipelineExecutor aSyncPipelineExecutor = new ASyncPipelineExecutor(pipelineRuntimeFactory);
         SequentialPipelineExecutor sequentialPipelineExecutor = new SequentialPipelineExecutor(pipelineRuntimeFactory);
-        return pipelineMeta -> pipelineMeta.getName().startsWith("sync") ? syncPipelineExecutor : sequentialPipelineExecutor;
+        return pipelineMeta -> pipelineMeta.getName().startsWith("sync") ? aSyncPipelineExecutor : sequentialPipelineExecutor;
     }
 }

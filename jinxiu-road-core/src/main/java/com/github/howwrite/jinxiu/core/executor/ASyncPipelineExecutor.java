@@ -13,15 +13,15 @@ import java.util.Vector;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SyncPipelineExecutor extends BasePipelineExecutor {
+public class ASyncPipelineExecutor extends BasePipelineExecutor {
     @Nonnull
     private final ExecutorService executorService;
 
-    public SyncPipelineExecutor(PipelineRuntimeFactory pipelineRuntimeFactory) {
+    public ASyncPipelineExecutor(PipelineRuntimeFactory pipelineRuntimeFactory) {
         this(pipelineRuntimeFactory, buildExecutorService());
     }
 
-    public SyncPipelineExecutor(PipelineRuntimeFactory pipelineRuntimeFactory, @Nonnull ExecutorService executorService) {
+    public ASyncPipelineExecutor(PipelineRuntimeFactory pipelineRuntimeFactory, @Nonnull ExecutorService executorService) {
         super(pipelineRuntimeFactory);
         this.executorService = executorService;
     }
