@@ -16,10 +16,13 @@
 
 ## 并行执行能力
 
+本框架支持无参数依赖的节点并行执行，使用方法见[并行执行](readme/quickStart.md#并行执行)。
+
 ![async](readme/async.png)
 
 - 根据参数解析依赖关系，将可以并行执行的node并行处理。
-- 线程池提供默认实现，同时可自定义替换。
+-
+线程池提供默认实现，同时可自定义替换，见[ASyncPipelineExecutor](jinxiu-road-core/src/main/java/com/github/howwrite/jinxiu/core/executor/ASyncPipelineExecutor.java)。
 
 ## 快速开始
 
@@ -38,7 +41,7 @@
   灵感依赖落地代码就快得多。<br/>
 + 本项目还在不断演进阶段，同时设计也并不复杂，欢迎有想法的朋友提出pr或者issue，如果能点一个star就足够我开心到想倒立🤸‍♀️。
 + 本项目遵循Apache License2.0协议，可以不受限制地将代码用在任何地方。(
-  如果你们某天收到的面试者的简历中说他是这个项目的开发者的话，还望可给一个面试机会哈哈哈)
+  如果你某天收到的简历中说他是这个项目的开发者的话，还望可给一个面试机会哈哈哈)。
 + 至于为什么叫锦绣路，因为那是我女朋友家门口的路名👩‍❤️‍👨。
 
 ## Star History
