@@ -39,7 +39,7 @@ public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
             }
             NodeMeta nodeMeta = nodeMetaFactory.buildNodeMeta(i, nodeType, initValueType, forwardReturnValueMetas, nodeList);
             nodeList[i] = nodeMeta;
-            String valueKey = StringUtils.isBlank(nodeMeta.getExecuteAnnotation().valueKey()) ? null : nodeMeta.getExecuteAnnotation().valueKey();
+            String valueKey = buildReturnValueMetaKey(nodeMeta);
             forwardReturnValueMetas[i] = new ValueMeta(valueKey, nodeMeta.getExecuteMethod().getReturnType());
         }
         if (returnValueNodeIndex == Integer.MAX_VALUE) {
@@ -47,6 +47,15 @@ public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
         }
         int[] noParentNodeIndexList = buildNoParentNodeIndexList(nodeList);
         return new PipelineMeta(pipelineName, nodeList, initValueType, returnValueNodeIndex, noParentNodeIndexList);
+    }
+
+    @Override
+    public String buildReturnValueMetaKey(NodeMeta nodeMeta) {
+        String annotationKey = nodeMeta.getExecuteAnnotation().valueKey();
+        if (StringUtils.isNotBlank(annotationKey)) {
+            return annotationKey;
+        }
+        return nodeMeta.getNodeClass().getSimpleName();
     }
 
     public int[] buildNoParentNodeIndexList(NodeMeta[] nodeList) {

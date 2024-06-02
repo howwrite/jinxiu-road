@@ -7,6 +7,7 @@ import com.github.howwrite.jinxiu.core.model.PipelineMetaBuildParam;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMeta;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory;
 import com.github.howwrite.jinxiu.core.runtime.PipelineRuntimeFactory;
+import com.github.howwrite.jinxiu.spring.mock.MajorPageRequest;
 import com.github.howwrite.jinxiu.spring.mock.TestCreateUserRequest;
 import com.github.howwrite.jinxiu.spring.mock.testNode.*;
 import org.springframework.boot.SpringBootConfiguration;
@@ -50,7 +51,7 @@ public class TestConfiguration {
     public PipelineMeta testSyncCreateUserInfo() {
         PipelineMetaBuildParam pipelineMetaBuildParam = PipelineMetaBuildParam.builder()
                 .initValueType(TestCreateUserRequest.class)
-                .name("syncCreateUserInfo")
+                .name("asyncCreateUserInfo")
                 .returnValueNodeType(BuildUserInfoNode.class)
                 .nodeTypes(CheckUserRequestNode.class, CheckUserInfoNode.class, RecallOtherUserInfoNode.class, BuildUserInfoNode.class,
                         SaveUserInfoNode.class)
@@ -60,9 +61,33 @@ public class TestConfiguration {
     }
 
     @Bean
+    public PipelineMeta testMajorPage() {
+        PipelineMetaBuildParam pipelineMetaBuildParam = PipelineMetaBuildParam.builder()
+                .initValueType(MajorPageRequest.class)
+                .name("majorPage")
+                .returnValueNodeType(BuildMajorPageResponseNode.class)
+                .nodeTypes(QueryUserByTokenNode.class, QueryUserTaskInfosNode.class, QueryWeatherNode.class, BuildMajorPageResponseNode.class)
+                .build();
+
+        return pipelineMetaFactory.buildPipelineMeta(pipelineMetaBuildParam);
+    }
+
+    @Bean
+    public PipelineMeta testAsyncMajorPage() {
+        PipelineMetaBuildParam pipelineMetaBuildParam = PipelineMetaBuildParam.builder()
+                .initValueType(MajorPageRequest.class)
+                .name("asyncMajorPage")
+                .returnValueNodeType(BuildMajorPageResponseNode.class)
+                .nodeTypes(QueryUserByTokenNode.class, QueryUserTaskInfosNode.class, QueryWeatherNode.class, BuildMajorPageResponseNode.class)
+                .build();
+
+        return pipelineMetaFactory.buildPipelineMeta(pipelineMetaBuildParam);
+    }
+
+    @Bean
     public PipelineExecutorProvider autoSyncExecutorProvider(PipelineRuntimeFactory pipelineRuntimeFactory) {
         ASyncPipelineExecutor aSyncPipelineExecutor = new ASyncPipelineExecutor(pipelineRuntimeFactory);
         SequentialPipelineExecutor sequentialPipelineExecutor = new SequentialPipelineExecutor(pipelineRuntimeFactory);
-        return pipelineMeta -> pipelineMeta.getName().startsWith("sync") ? aSyncPipelineExecutor : sequentialPipelineExecutor;
+        return pipelineMeta -> pipelineMeta.getName().startsWith("async") ? aSyncPipelineExecutor : sequentialPipelineExecutor;
     }
 }

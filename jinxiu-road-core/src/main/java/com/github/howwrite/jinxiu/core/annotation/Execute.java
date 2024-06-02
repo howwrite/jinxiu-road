@@ -1,6 +1,6 @@
 package com.github.howwrite.jinxiu.core.annotation;
 
-import com.github.howwrite.jinxiu.core.model.ValueMeta;
+import com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory;
 
 import java.lang.annotation.*;
 
@@ -14,7 +14,8 @@ import java.lang.annotation.*;
 public @interface Execute {
     /**
      * 当前方法返回值对应的key
-     * 用于与后续节点执行方法参数匹配, {@link com.github.howwrite.jinxiu.core.component.ParamMatcher#match(String, Class, ValueMeta)}
+     * 用于与后续节点执行方法参数匹配, {@link com.github.howwrite.jinxiu.core.component.ParamMatcher#match}
+     * 默认是node类的simpleName{@link PipelineMetaFactory#buildReturnValueMetaKey}
      *
      * @return valueKey 不写则表示不做特殊标注
      */
