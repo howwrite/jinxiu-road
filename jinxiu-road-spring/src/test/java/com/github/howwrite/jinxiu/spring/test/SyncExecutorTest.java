@@ -19,7 +19,7 @@ public class SyncExecutorTest extends BaseJinxiuSpringTest {
         TestCreateUserRequest initValue = new TestCreateUserRequest();
         initValue.setUsername(username);
         initValue.setBirthday(LocalDate.of(1998, 5, 1));
-        Object createUser = LetUsGo.go("syncCreateUserInfo", initValue);
+        Object createUser = LetUsGo.go("asyncCreateUserInfo", initValue);
         TestUserInfo userInfo = (TestUserInfo) createUser;
         Assert.assertEquals(username, userInfo.getUsername());
         Assert.assertEquals(LocalDateTime.of(2023, 2, 4, 19, 0), userInfo.getRegisterTime());
@@ -33,7 +33,7 @@ public class SyncExecutorTest extends BaseJinxiuSpringTest {
         initValue.setBirthday(LocalDate.now());
         initValue.setUsername(username);
         try {
-            Object createUser = LetUsGo.go("syncCreateUserInfo", initValue);
+            Object createUser = LetUsGo.go("asyncCreateUserInfo", initValue);
             Assert.fail();
         } catch (Exception e) {
             Assert.assertTrue(e instanceof ExecuteTargetException);
