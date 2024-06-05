@@ -10,8 +10,8 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 流水线元数据注册器
- * 将流水线元信息构造完成后注入spring容器即可
+ * 管道元数据注册器
+ * 将管道元信息构造完成后注入spring容器即可
  *
  * @see com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory
  */

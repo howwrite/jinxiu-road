@@ -4,9 +4,9 @@ import com.github.howwrite.jinxiu.core.executor.ASyncPipelineExecutor;
 import com.github.howwrite.jinxiu.core.executor.PipelineExecutorProvider;
 import com.github.howwrite.jinxiu.core.executor.SequentialPipelineExecutor;
 import com.github.howwrite.jinxiu.core.model.PipelineMetaBuildParam;
+import com.github.howwrite.jinxiu.core.node.NodeInstanceProvider;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMeta;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory;
-import com.github.howwrite.jinxiu.core.runtime.PipelineRuntimeFactory;
 import com.github.howwrite.jinxiu.spring.mock.MajorPageRequest;
 import com.github.howwrite.jinxiu.spring.mock.TestCreateUserRequest;
 import com.github.howwrite.jinxiu.spring.mock.testNode.*;
@@ -85,9 +85,9 @@ public class TestConfiguration {
     }
 
     @Bean
-    public PipelineExecutorProvider autoSyncExecutorProvider(PipelineRuntimeFactory pipelineRuntimeFactory) {
-        ASyncPipelineExecutor aSyncPipelineExecutor = new ASyncPipelineExecutor(pipelineRuntimeFactory);
-        SequentialPipelineExecutor sequentialPipelineExecutor = new SequentialPipelineExecutor(pipelineRuntimeFactory);
+    public PipelineExecutorProvider autoSyncExecutorProvider(NodeInstanceProvider nodeInstanceProvider) {
+        ASyncPipelineExecutor aSyncPipelineExecutor = new ASyncPipelineExecutor(nodeInstanceProvider);
+        SequentialPipelineExecutor sequentialPipelineExecutor = new SequentialPipelineExecutor(nodeInstanceProvider);
         return pipelineMeta -> pipelineMeta.getName().startsWith("async") ? aSyncPipelineExecutor : sequentialPipelineExecutor;
     }
 }

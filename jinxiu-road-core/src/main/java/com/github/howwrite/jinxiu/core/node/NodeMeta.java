@@ -6,19 +6,17 @@ import lombok.Data;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class NodeMeta {
     /**
-     * 当前节点在流水线中的下标
+     * 当前节点在管道中的下标
      */
     private final int index;
 
     /**
      * 节点执行类的类型
-     * 在运行时会通过{@link NodeProvider}获取运行时的实例
+     * 在运行时会通过{@link NodeInstanceProvider}获取运行时的实例
      */
     @Nonnull
     private final Class<? extends Node> nodeClass;
@@ -41,19 +39,4 @@ public class NodeMeta {
      * 执行方法的参数的来源
      */
     private final ParamSource[] paramSources;
-
-    /**
-     * 父node 下标列表
-     */
-    private final int[] parentNodeIndexes;
-
-    /**
-     * 子node下标列表
-     */
-    private final List<Integer> childNodeIndexList = new ArrayList<>();
-
-
-    public void addChildIndex(int childNodeIndex) {
-        childNodeIndexList.add(childNodeIndex);
-    }
 }

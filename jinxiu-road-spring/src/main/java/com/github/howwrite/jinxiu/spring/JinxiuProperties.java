@@ -11,8 +11,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "jinxiu")
 public class JinxiuProperties {
-    private Boolean enableDefaultNodeRuntimeFactory;
-    private Boolean enableDefaultPipelineRuntimeFactory;
     private Boolean enableDefaultPipelineExecutorProvider;
     private Boolean enableDefaultNodeProvider;
     private Boolean enableDefaultNodeMetaFactory;

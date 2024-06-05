@@ -5,26 +5,17 @@ import com.github.howwrite.jinxiu.core.node.NodeMeta;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
+@Getter
 public class NodeRuntime {
-    @Getter
     private final NodeMeta nodeMeta;
 
-    @Getter
-    private final AtomicInteger waitRunParentNodeNum;
-
-    @Getter
     private final Node nodeInstance;
 
-    @Getter
     @Setter
     private volatile Object returnValue;
 
-
-    public NodeRuntime(NodeMeta nodeMeta, Node nodeInstance, AtomicInteger waitRunParentNodeNum) {
+    public NodeRuntime(NodeMeta nodeMeta, Node nodeInstance) {
         this.nodeMeta = nodeMeta;
         this.nodeInstance = nodeInstance;
-        this.waitRunParentNodeNum = waitRunParentNodeNum;
     }
 }

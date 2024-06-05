@@ -4,14 +4,10 @@ import com.github.howwrite.jinxiu.core.component.DefaultParamMatcher;
 import com.github.howwrite.jinxiu.core.component.ParamMatcher;
 import com.github.howwrite.jinxiu.core.executor.PipelineExecutorProvider;
 import com.github.howwrite.jinxiu.core.executor.SequentialPipelineExecutor;
+import com.github.howwrite.jinxiu.core.node.NodeInstanceProvider;
 import com.github.howwrite.jinxiu.core.node.NodeMetaFactory;
-import com.github.howwrite.jinxiu.core.node.NodeProvider;
 import com.github.howwrite.jinxiu.core.pipeline.DefaultPipelineMetaFactory;
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory;
-import com.github.howwrite.jinxiu.core.runtime.DefaultNodeRuntimeFactory;
-import com.github.howwrite.jinxiu.core.runtime.DefaultPipelineRuntimeFactory;
-import com.github.howwrite.jinxiu.core.runtime.NodeRuntimeFactory;
-import com.github.howwrite.jinxiu.core.runtime.PipelineRuntimeFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,32 +28,18 @@ import org.springframework.context.annotation.Configuration;
 public class JinxiuRoadConfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "jinxiu", name = "enable-default-node-runtime-factory", havingValue = "true", matchIfMissing = true)
-    @ConditionalOnMissingBean
-    public NodeRuntimeFactory nodeRuntimeFactory(NodeProvider nodeProvider) {
-        return new DefaultNodeRuntimeFactory(nodeProvider);
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "jinxiu", name = "enable-default-pipeline-runtime-factory", havingValue = "true", matchIfMissing = true)
-    @ConditionalOnMissingBean
-    public PipelineRuntimeFactory pipelineRuntimeFactory(NodeRuntimeFactory nodeRuntimeFactory) {
-        return new DefaultPipelineRuntimeFactory(nodeRuntimeFactory);
-    }
-
-    @Bean
     @ConditionalOnProperty(prefix = "jinxiu", name = "enable-default-pipeline-executor-provider", havingValue = "true", matchIfMissing = true)
     @ConditionalOnMissingBean
-    public PipelineExecutorProvider pipelineExecutorProvider(PipelineRuntimeFactory pipelineRuntimeFactory) {
-        SequentialPipelineExecutor sequentialPipelineExecutor = new SequentialPipelineExecutor(pipelineRuntimeFactory);
+    public PipelineExecutorProvider pipelineExecutorProvider(NodeInstanceProvider nodeInstanceProvider) {
+        SequentialPipelineExecutor sequentialPipelineExecutor = new SequentialPipelineExecutor(nodeInstanceProvider);
         return pipelineMeta -> sequentialPipelineExecutor;
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "jinxiu", name = "enable-default-node-provider", havingValue = "true", matchIfMissing = true)
     @ConditionalOnMissingBean
-    public NodeProvider nodeProvider(ApplicationContext applicationContext) {
-        return new SpringNodeProvider(applicationContext);
+    public NodeInstanceProvider nodeProvider(ApplicationContext applicationContext) {
+        return new SpringNodeInstanceProvider(applicationContext);
     }
 
     @Bean

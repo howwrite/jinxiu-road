@@ -6,6 +6,7 @@ import com.github.howwrite.jinxiu.core.component.ParamMatcher;
 import com.github.howwrite.jinxiu.core.exception.BuildException;
 import com.github.howwrite.jinxiu.core.model.ValueMeta;
 import com.github.howwrite.jinxiu.core.model.paramsource.ForwardParamSource;
+import com.github.howwrite.jinxiu.core.model.paramsource.InitValueFieldSource;
 import com.github.howwrite.jinxiu.core.model.paramsource.InitValueSource;
 import com.github.howwrite.jinxiu.core.model.paramsource.ParamSource;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 @RequiredArgsConstructor
 public class NodeMetaFactory {
@@ -27,33 +27,21 @@ public class NodeMetaFactory {
      */
     private final ParamMatcher paramMatcher;
 
-    public NodeMeta buildNodeMeta(int nodeIndex, Class<? extends Node> nodeClass, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas,
-                                  NodeMeta[] nodeList) {
+    public NodeMeta buildNodeMeta(int nodeIndex, Class<? extends Node> nodeClass, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas) {
         Pair<Execute, Method> executeMethod = findExecuteMethod(nodeClass);
         Method method = executeMethod.getValue();
         method.setAccessible(true);
         Parameter[] parameters = method.getParameters();
         ParamSource[] paramSources = new ParamSource[parameters.length];
-        ArrayList<Integer> parentNodeIndexList = new ArrayList<>();
         for (int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
             ParamSource paramSource = buildParamSource(parameter, initValueType, forwardReturnValueMetas);
             paramSources[i] = paramSource;
-            if (paramSource instanceof ForwardParamSource) {
-                ForwardParamSource forwardParamSource = (ForwardParamSource) paramSource;
-                int parentNodeIndex = forwardParamSource.getIndex();
-                nodeList[parentNodeIndex].addChildIndex(nodeIndex);
-                parentNodeIndexList.add(parentNodeIndex);
-            }
         }
-        int[] parentNodeIndexes = new int[parentNodeIndexList.size()];
-        for (int i = 0; i < parentNodeIndexList.size(); i++) {
-            parentNodeIndexes[i] = parentNodeIndexList.get(i);
-        }
-        return new NodeMeta(nodeIndex, nodeClass, method, executeMethod.getKey(), paramSources, parentNodeIndexes);
+        return new NodeMeta(nodeIndex, nodeClass, method, executeMethod.getKey(), paramSources);
     }
 
-    private ParamSource buildParamSource(Parameter parameter, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas) {
+    public ParamSource buildParamSource(Parameter parameter, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas) {
         String paramName = buildParamName(parameter);
         Type paramType = parameter.getParameterizedType();
         for (int i = forwardReturnValueMetas.length - 1; i >= 0; i--) {
@@ -72,7 +60,7 @@ public class NodeMetaFactory {
         for (Field declaredField : declaredFields) {
             if (paramMatcher.match(paramName, paramType, new ValueMeta(declaredField.getName(), declaredField.getGenericType()))) {
                 declaredField.setAccessible(true);
-                return new InitValueSource(declaredField);
+                return new InitValueFieldSource(declaredField);
             }
         }
         throw new BuildException("not match param, name:" + paramName + ", type:" + paramType);
@@ -92,9 +80,6 @@ public class NodeMetaFactory {
 
     /**
      * 查询该类型中标注{@link Execute}的方法
-     *
-     * @param clazz
-     * @return
      */
     @Nonnull
     private Pair<Execute, Method> findExecuteMethod(@Nonnull Class<?> clazz) {

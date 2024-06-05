@@ -9,9 +9,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Data
 public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
@@ -37,7 +35,7 @@ public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
             if (nodeType.equals(returnValueNodeType)) {
                 returnValueNodeIndex = Math.min(returnValueNodeIndex, i);
             }
-            NodeMeta nodeMeta = nodeMetaFactory.buildNodeMeta(i, nodeType, initValueType, forwardReturnValueMetas, nodeList);
+            NodeMeta nodeMeta = nodeMetaFactory.buildNodeMeta(i, nodeType, initValueType, forwardReturnValueMetas);
             nodeList[i] = nodeMeta;
             String valueKey = buildReturnValueMetaKey(nodeMeta);
             forwardReturnValueMetas[i] = new ValueMeta(valueKey, nodeMeta.getExecuteMethod().getReturnType());
@@ -45,8 +43,7 @@ public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
         if (returnValueNodeIndex == Integer.MAX_VALUE) {
             throw new IllegalArgumentException("not found provider return value node");
         }
-        int[] noParentNodeIndexList = buildNoParentNodeIndexList(nodeList);
-        return new PipelineMeta(pipelineName, nodeList, initValueType, returnValueNodeIndex, noParentNodeIndexList);
+        return new PipelineMeta(pipelineName, nodeList, initValueType, returnValueNodeIndex);
     }
 
     @Override
@@ -57,16 +54,4 @@ public class DefaultPipelineMetaFactory implements PipelineMetaFactory {
         }
         return nodeMeta.getNodeClass().getSimpleName();
     }
-
-    public int[] buildNoParentNodeIndexList(NodeMeta[] nodeList) {
-        Set<Integer> result = new HashSet<>();
-        for (int i = 0; i < nodeList.length; i++) {
-            result.add(i);
-        }
-        for (NodeMeta nodeMeta : nodeList) {
-            nodeMeta.getChildNodeIndexList().forEach(result::remove);
-        }
-        return result.stream().mapToInt(i -> i).toArray();
-    }
-
 }

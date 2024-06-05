@@ -6,12 +6,12 @@ import lombok.Data;
 @Data
 public class PipelineMeta {
     /**
-     * 流水线名称，用于运行时识别执行的是哪条流水线
+     * 管道名称，用于运行时识别执行的是哪条管道
      */
     private final String name;
 
     /**
-     * 流水线中节点元信息列表，节点顺序有依赖关系
+     * 管道中节点元信息列表，节点顺序有依赖关系
      */
     private final NodeMeta[] nodes;
 
@@ -22,12 +22,26 @@ public class PipelineMeta {
 
     /**
      * 当前产生返回值的节点下标。
-     * 执行结束后会将该节点的返回值作为流水线的返回值返回。
+     * 执行结束后会将该节点的返回值作为管道的返回值返回。
      */
     private final int returnValueNodeIndex;
 
     /**
-     * 没有前置依赖节点的节点下标列表
+     * pipeline唯一表示是name
      */
-    private final int[] noParentNodeIndexList;
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
+        if (!(object instanceof PipelineMeta)) {
+            return false;
+        }
+        return name.equals(((PipelineMeta) object).getName());
+    }
 }

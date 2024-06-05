@@ -11,14 +11,14 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 流水线启动器，可通过{@link #go(String, Object)}获取对应流水线并执行获取执行结果
+ * 管道启动器，可通过{@link #go(String, Object)}获取对应管道并执行获取执行结果
  */
 public class LetUsGo {
 
     private static final Map<String, PipelineMeta> PIPELINE_META_MAP = new ConcurrentHashMap<>();
 
     /**
-     * 流水线执行器提供者
+     * 管道执行器提供者
      */
     private static PipelineExecutorProvider PIPELINE_EXECUTOR_PROVIDER;
 

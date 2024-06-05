@@ -58,7 +58,7 @@ public class QueryWeatherNode implements Node {
 2. 类中有且仅有一个public方法声明`@Execute`注解，它就是这个节点执行的方法。
 3. 将类注入spring容器中。
 
-### 4. 声明流水线(Pipeline)
+### 4. 声明管道(Pipeline)
 
 ```java
 import com.github.howwrite.jinxiu.core.pipeline.PipelineMetaFactory;
@@ -85,9 +85,9 @@ public class DefaultConfiguration {
 }
 ```
 
-1. `name`表示当前流水线的名称，后续调用也是通过name调用。
+1. `name`表示当前管道的名称，后续调用也是通过name调用匹配调用。
 2. `initValueType`声明初始值的类型，调用时需要传入这个类型的对象。
-3. `nodeTypes`声明流水线中执行节点的类型，有前后顺序。
+3. `nodeTypes`声明管道中执行节点的类型，有前后顺序。
 4. `returnValueNodeType`表示有返回值的node类型，当此类型的node执行完成后它的结果即是返回值。
 5. 将pipelineMeta对象注入spring容器。
 

@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
- * 流水线执行器提供者注册器
+ * 管道执行器提供者注册器
  *
  * @see LetUsGo#register(PipelineExecutorProvider)
  */
