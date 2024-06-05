@@ -21,7 +21,6 @@
 ![async](readme/async.png)
 
 - 根据参数解析依赖关系，将可以并行执行的node并行处理。
--
 线程池提供默认实现，同时可自定义替换，见[ASyncPipelineExecutor](jinxiu-road-core/src/main/java/com/github/howwrite/jinxiu/core/executor/ASyncPipelineExecutor.java)。
 
 ## 快速开始
@@ -33,6 +32,7 @@
 - [ ] 扩展能力不够完善，例如对于参数选择、日志处理等部分的处理不够优雅，这个持续优化，目前api没有完全确定。
 - [ ] 异常处理不够优雅，尤其是并行实现中对异常的处理，还在探索如何优雅处理。
 - [ ] 节点前后依赖关系是通过参数来做的，并没有提供自定义调整的能力，预期是在创建pipelineMeta的时候可以声明依赖关系，但是没有想好怎么做。
+- [ ] 提供pipeline级别全局参数能力，因为在异步情况下线程上下文是失效的。
 - [ ] 还有些小问题，比如单元测试不够完善等。慢慢完善。。
 
 ## Star History
