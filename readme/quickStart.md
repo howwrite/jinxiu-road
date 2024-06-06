@@ -12,7 +12,7 @@ boot。<br/>
 <dependency>
     <groupId>com.github.howwrite</groupId>
     <artifactId>jinxiu-road-spring</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 

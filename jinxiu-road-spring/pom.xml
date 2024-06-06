@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.howwrite</groupId>
         <artifactId>jinxiu-road</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>jinxiu-road-spring</artifactId>
