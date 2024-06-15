@@ -4,11 +4,9 @@ import com.github.howwrite.jinxiu.core.annotation.Execute;
 import com.github.howwrite.jinxiu.core.annotation.Param;
 import com.github.howwrite.jinxiu.core.component.ParamMatcher;
 import com.github.howwrite.jinxiu.core.exception.BuildException;
+import com.github.howwrite.jinxiu.core.globalValue.GlobalValueMeta;
 import com.github.howwrite.jinxiu.core.model.ValueMeta;
-import com.github.howwrite.jinxiu.core.model.paramsource.ForwardParamSource;
-import com.github.howwrite.jinxiu.core.model.paramsource.InitValueFieldSource;
-import com.github.howwrite.jinxiu.core.model.paramsource.InitValueSource;
-import com.github.howwrite.jinxiu.core.model.paramsource.ParamSource;
+import com.github.howwrite.jinxiu.core.model.paramsource.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -27,7 +25,8 @@ public class NodeMetaFactory {
      */
     private final ParamMatcher paramMatcher;
 
-    public NodeMeta buildNodeMeta(int nodeIndex, Class<? extends Node> nodeClass, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas) {
+    public NodeMeta buildNodeMeta(int nodeIndex, Class<? extends Node> nodeClass, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas,
+                                  GlobalValueMeta[] globalValueClasses) {
         Pair<Execute, Method> executeMethod = findExecuteMethod(nodeClass);
         Method method = executeMethod.getValue();
         method.setAccessible(true);
@@ -35,32 +34,41 @@ public class NodeMetaFactory {
         ParamSource[] paramSources = new ParamSource[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
-            ParamSource paramSource = buildParamSource(parameter, initValueType, forwardReturnValueMetas);
+            ParamSource paramSource = buildParamSource(parameter, initValueType, forwardReturnValueMetas, globalValueClasses);
             paramSources[i] = paramSource;
         }
         return new NodeMeta(nodeIndex, nodeClass, method, executeMethod.getKey(), paramSources);
     }
 
-    public ParamSource buildParamSource(Parameter parameter, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas) {
+    public ParamSource buildParamSource(Parameter parameter, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas,
+                                        GlobalValueMeta[] globalValueClasses) {
         String paramName = buildParamName(parameter);
         Type paramType = parameter.getParameterizedType();
+
+        // 通过前置node返回值匹配
         for (int i = forwardReturnValueMetas.length - 1; i >= 0; i--) {
             if (forwardReturnValueMetas[i] != null && paramMatcher.match(paramName, paramType, forwardReturnValueMetas[i])) {
-                return new ForwardParamSource(i);
+                return new ForwardParamSource(paramType, i);
             }
         }
 
         // 如果需要的是初始值
         if (paramMatcher.match(paramName, paramType, new ValueMeta(null, initValueType))) {
-            return new InitValueSource();
+            return new InitValueSource(paramType);
         }
-
         // 如果需要的是初始值的某个字段
         Field[] declaredFields = initValueType.getDeclaredFields();
         for (Field declaredField : declaredFields) {
             if (paramMatcher.match(paramName, paramType, new ValueMeta(declaredField.getName(), declaredField.getGenericType()))) {
                 declaredField.setAccessible(true);
-                return new InitValueFieldSource(declaredField);
+                return new InitValueFieldSource(paramType, declaredField);
+            }
+        }
+
+        // 全局字段
+        for (int i = 0; i < globalValueClasses.length; i++) {
+            if (globalValueClasses[i] != null && paramMatcher.match(paramName, paramType, globalValueClasses[i])) {
+                return new GlobalValueFieldSource(paramType, i);
             }
         }
         throw new BuildException("not match param, name:" + paramName + ", type:" + paramType);

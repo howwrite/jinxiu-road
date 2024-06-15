@@ -90,7 +90,8 @@ public class ASyncPipelineExecutor extends BasePipelineExecutor {
             NodeMeta nodeMeta = pipelineMeta.getNodes()[i];
             asyncNodeRuntimes[i] = buildAsyncNodeRuntime(nodeMeta, i, asyncPipelineMetaExtend);
         }
-        return new AsyncPipelineRuntime(pipelineMeta, initValue, asyncNodeRuntimes, asyncPipelineMetaExtend.getNoParentNodeIndexesArray());
+        return new AsyncPipelineRuntime(pipelineMeta, initValue, asyncNodeRuntimes, asyncPipelineMetaExtend.getNoParentNodeIndexesArray(),
+                buildGlobalValues(pipelineMeta));
     }
 
     public AsyncNodeRuntime buildAsyncNodeRuntime(NodeMeta nodeMeta, int nodeIndex, AsyncPipelineMetaExtend asyncPipelineMetaExtend) {

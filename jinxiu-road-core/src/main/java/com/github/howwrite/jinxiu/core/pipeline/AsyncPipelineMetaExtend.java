@@ -1,10 +1,13 @@
 package com.github.howwrite.jinxiu.core.pipeline;
 
+import com.github.howwrite.jinxiu.core.annotation.SafeValue;
 import com.github.howwrite.jinxiu.core.model.paramsource.ForwardParamSource;
 import com.github.howwrite.jinxiu.core.model.paramsource.ParamSource;
 import com.github.howwrite.jinxiu.core.node.NodeMeta;
 import lombok.Getter;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,8 +42,10 @@ public class AsyncPipelineMetaExtend {
                 parentIndexList.add(parentIndex);
                 // 增加当前节点父类
                 parentNodeIndexes.get(i).add(parentIndex);
-                // 前置使用该父类的节点都是本节点的父类
-                parentNodeIndexes.get(i).addAll(childNodeIndexes.get(parentIndex));
+                if (!judgeTypeIsSafe(paramSource.getParamType())) {
+                    // 前置使用该父类的节点都是本节点的父类
+                    parentNodeIndexes.get(i).addAll(childNodeIndexes.get(parentIndex));
+                }
                 // 父类的子节点增加当前节点
                 childNodeIndexes.get(parentIndex).add(i);
             }
@@ -69,5 +74,14 @@ public class AsyncPipelineMetaExtend {
         for (Integer noParentNodeIndex : noParentNodeIndexes) {
             noParentNodeIndexesArray[index++] = noParentNodeIndex;
         }
+    }
+
+    private boolean judgeTypeIsSafe(Type type) {
+        if (!(type instanceof Class)) {
+            return false;
+        }
+        Class<?> clazz = (Class<?>) type;
+        Annotation annotation = clazz.getAnnotation(SafeValue.class);
+        return annotation == null;
     }
 }

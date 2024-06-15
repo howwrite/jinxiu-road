@@ -1,5 +1,6 @@
 package com.github.howwrite.jinxiu.core.pipeline;
 
+import com.github.howwrite.jinxiu.core.globalValue.GlobalValueMeta;
 import com.github.howwrite.jinxiu.core.node.NodeMeta;
 import lombok.Data;
 
@@ -19,6 +20,8 @@ public class PipelineMeta {
      * 初始值类型
      */
     private final Class<?> initValueType;
+
+    private final GlobalValueMeta[] globalValueMetas;
 
     /**
      * 当前产生返回值的节点下标。

@@ -7,8 +7,9 @@ import lombok.Getter;
 public class AsyncPipelineRuntime extends PipelineRuntime {
     private final int[] noParentIndexList;
 
-    public AsyncPipelineRuntime(PipelineMeta pipelineMeta, Object initValue, AsyncNodeRuntime[] nodeRuntimes, int[] noParentIndexList) {
-        super(pipelineMeta, initValue, nodeRuntimes);
+    public AsyncPipelineRuntime(PipelineMeta pipelineMeta, Object initValue, AsyncNodeRuntime[] nodeRuntimes, int[] noParentIndexList,
+                                Object[] globalValues) {
+        super(pipelineMeta, initValue, nodeRuntimes, globalValues);
         this.noParentIndexList = noParentIndexList;
     }
 

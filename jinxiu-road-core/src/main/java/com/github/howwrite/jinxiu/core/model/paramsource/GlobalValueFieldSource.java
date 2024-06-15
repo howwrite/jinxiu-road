@@ -6,16 +6,16 @@ import lombok.Getter;
 import java.lang.reflect.Type;
 
 @Getter
-public class ForwardParamSource extends BaseParamSource {
+public class GlobalValueFieldSource extends BaseParamSource {
     private final int index;
 
-    public ForwardParamSource(Type paramType, int index) {
+    public GlobalValueFieldSource(Type paramType, int index) {
         super(paramType);
         this.index = index;
     }
 
     @Override
     public Object getParam(Object initValue, NodeRuntime[] nodeRuntimes, Object[] globalValues) {
-        return nodeRuntimes[index].getReturnValue();
+        return globalValues[index];
     }
 }

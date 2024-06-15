@@ -1,6 +1,7 @@
 package com.github.howwrite.jinxiu.core.executor;
 
 import com.github.howwrite.jinxiu.core.exception.ExecuteTargetException;
+import com.github.howwrite.jinxiu.core.globalValue.GlobalValueMeta;
 import com.github.howwrite.jinxiu.core.model.ExecutorErrorResult;
 import com.github.howwrite.jinxiu.core.model.paramsource.ParamSource;
 import com.github.howwrite.jinxiu.core.node.NodeInstanceProvider;
@@ -27,7 +28,7 @@ public abstract class BasePipelineExecutor implements PipelineExecutor {
         ParamSource[] paramSources = nodeMeta.getParamSources();
         Object[] params = new Object[paramSources.length];
         for (int i = 0; i < paramSources.length; i++) {
-            params[i] = paramSources[i].getParam(runtime.getInitValue(), runtime.getNodeRuntimes());
+            params[i] = paramSources[i].getParam(runtime.getInitValue(), runtime.getNodeRuntimes(), runtime.getGlobalValues());
         }
         try {
             Object result = nodeMeta.getExecuteMethod().invoke(runtime.getNodeRuntimes()[index].getNodeInstance(), params);
@@ -46,7 +47,16 @@ public abstract class BasePipelineExecutor implements PipelineExecutor {
     }
 
     public PipelineRuntime buildPipelineRuntime(@Nonnull PipelineMeta pipelineMeta, @Nonnull Object initValue) {
-        return new PipelineRuntime(pipelineMeta, initValue, buildNodeRuntimeInstances(pipelineMeta));
+        return new PipelineRuntime(pipelineMeta, initValue, buildNodeRuntimeInstances(pipelineMeta), buildGlobalValues(pipelineMeta));
+    }
+
+    public Object[] buildGlobalValues(@Nonnull PipelineMeta pipelineMeta) {
+        GlobalValueMeta[] globalValueMetas = pipelineMeta.getGlobalValueMetas();
+        Object[] globalValues = new Object[globalValueMetas.length];
+        for (int i = 0; i < globalValueMetas.length; i++) {
+            globalValues[i] = globalValueMetas[i].getGlobalValueSupplier().get();
+        }
+        return globalValues;
     }
 
     public NodeRuntime[] buildNodeRuntimeInstances(PipelineMeta pipelineMeta) {

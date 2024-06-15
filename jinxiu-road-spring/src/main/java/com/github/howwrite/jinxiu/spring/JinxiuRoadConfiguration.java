@@ -4,6 +4,7 @@ import com.github.howwrite.jinxiu.core.component.DefaultParamMatcher;
 import com.github.howwrite.jinxiu.core.component.ParamMatcher;
 import com.github.howwrite.jinxiu.core.executor.PipelineExecutorProvider;
 import com.github.howwrite.jinxiu.core.executor.SequentialPipelineExecutor;
+import com.github.howwrite.jinxiu.core.globalValue.GlobalValueProvider;
 import com.github.howwrite.jinxiu.core.node.NodeInstanceProvider;
 import com.github.howwrite.jinxiu.core.node.NodeMetaFactory;
 import com.github.howwrite.jinxiu.core.pipeline.DefaultPipelineMetaFactory;
@@ -15,6 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * 默认组件配置
@@ -59,7 +62,7 @@ public class JinxiuRoadConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "jinxiu", name = "enable-default-pipeline-meta-factory", havingValue = "true", matchIfMissing = true)
     @ConditionalOnMissingBean
-    public PipelineMetaFactory pipelineMetaFactory(NodeMetaFactory nodeMetaFactory) {
-        return new DefaultPipelineMetaFactory(nodeMetaFactory);
+    public PipelineMetaFactory pipelineMetaFactory(NodeMetaFactory nodeMetaFactory, List<GlobalValueProvider> globalValueProviders) {
+        return new DefaultPipelineMetaFactory(nodeMetaFactory, globalValueProviders);
     }
 }
