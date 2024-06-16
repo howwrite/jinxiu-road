@@ -8,5 +8,5 @@ public interface GlobalValueProvider {
         return true;
     }
 
-    GlobalValueMeta generateGlobalValueMeta(String pipelineName);
+    GlobalValueMeta<?> generateGlobalValueMeta(String pipelineName);
 }

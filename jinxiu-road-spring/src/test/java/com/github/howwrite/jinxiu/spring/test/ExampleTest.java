@@ -28,6 +28,7 @@ public class ExampleTest extends BaseJinxiuSpringTest {
         Assert.assertEquals(2, majorPage.getTaskInfos().size());
         Assert.assertEquals("coding", majorPage.getTaskInfos().get(0).getTaskName());
         Assert.assertEquals("sleep", majorPage.getTaskInfos().get(1).getTaskName());
+        Assert.assertEquals("taskCount=2", majorPage.getLog());
 
         // see com.github.howwrite.jinxiu.spring.mock.testNode.QueryWeatherNode
         Assert.assertEquals("2023-02-04", majorPage.getWeatherInfo().getDateStr());
@@ -77,6 +78,7 @@ public class ExampleTest extends BaseJinxiuSpringTest {
         Assert.assertEquals(2, majorPage.getTaskInfos().size());
         Assert.assertEquals("coding", majorPage.getTaskInfos().get(0).getTaskName());
         Assert.assertEquals("sleep", majorPage.getTaskInfos().get(1).getTaskName());
+        Assert.assertEquals("taskCount=2", majorPage.getLog());
 
         // see com.github.howwrite.jinxiu.spring.mock.testNode.QueryWeatherNode
         Assert.assertEquals("2023-02-04", majorPage.getWeatherInfo().getDateStr());

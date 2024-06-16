@@ -9,4 +9,5 @@ public class MajorPageResponse {
     private final UserInfo userInfo;
     private final WeatherInfo weatherInfo;
     private final List<TaskInfo> taskInfos;
+    private final String log;
 }

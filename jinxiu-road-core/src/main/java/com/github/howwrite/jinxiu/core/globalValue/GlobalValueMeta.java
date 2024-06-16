@@ -5,15 +5,14 @@ import lombok.Getter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Type;
 import java.util.function.Supplier;
 
 @Getter
-public class GlobalValueMeta extends ValueMeta {
+public class GlobalValueMeta<T> extends ValueMeta {
 
-    private final Supplier<?> globalValueSupplier;
+    private final Supplier<T> globalValueSupplier;
 
-    public GlobalValueMeta(@Nullable String valueKey, @Nonnull Type valueType, @Nonnull Supplier<?> globalValueSupplier) {
+    public GlobalValueMeta(@Nullable String valueKey, @Nonnull Class<T> valueType, @Nonnull Supplier<T> globalValueSupplier) {
         super(valueKey, valueType);
         this.globalValueSupplier = globalValueSupplier;
     }
