@@ -6,10 +6,10 @@ import lombok.Getter;
 import java.lang.reflect.Type;
 
 @Getter
-public class GlobalValueFieldSource extends BaseParamSource {
+public class GlobalValueSource extends BaseParamSource {
     private final int index;
 
-    public GlobalValueFieldSource(Type paramType, int index) {
+    public GlobalValueSource(Type paramType, int index) {
         super(paramType);
         this.index = index;
     }

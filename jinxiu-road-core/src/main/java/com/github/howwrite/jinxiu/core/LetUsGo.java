@@ -23,7 +23,7 @@ public class LetUsGo {
     private static PipelineExecutorProvider PIPELINE_EXECUTOR_PROVIDER;
 
     public static Object go(String pipelineName, Object initValue) {
-        PipelineMeta pipelineMeta = Objects.requireNonNull(PIPELINE_META_MAP.get(pipelineName));
+        PipelineMeta pipelineMeta = Objects.requireNonNull(getPipelineMeta(pipelineName));
         PipelineExecutor pipelineExecutor = PIPELINE_EXECUTOR_PROVIDER.getPipelineExecutor(pipelineMeta);
         return pipelineExecutor.go(pipelineMeta, initValue);
     }
@@ -41,5 +41,9 @@ public class LetUsGo {
             throw new BuildException("Duplicate registration pipeline executor provider, existClass:" + PIPELINE_EXECUTOR_PROVIDER.getClass().getName());
         }
         PIPELINE_EXECUTOR_PROVIDER = pipelineExecutorProvider;
+    }
+
+    public static PipelineMeta getPipelineMeta(String pipelineMetaName) {
+        return PIPELINE_META_MAP.get(pipelineMetaName);
     }
 }

@@ -21,7 +21,7 @@ public class PipelineMeta {
      */
     private final Class<?> initValueType;
 
-    private final GlobalValueMeta[] globalValueMetas;
+    private final GlobalValueMeta<?>[] globalValueMetas;
 
     /**
      * 当前产生返回值的节点下标。

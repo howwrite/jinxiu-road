@@ -26,7 +26,7 @@ public class NodeMetaFactory {
     private final ParamMatcher paramMatcher;
 
     public NodeMeta buildNodeMeta(int nodeIndex, Class<? extends Node> nodeClass, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas,
-                                  GlobalValueMeta[] globalValueClasses) {
+                                  GlobalValueMeta<?>[] globalValueClasses) {
         Pair<Execute, Method> executeMethod = findExecuteMethod(nodeClass);
         Method method = executeMethod.getValue();
         method.setAccessible(true);
@@ -41,7 +41,7 @@ public class NodeMetaFactory {
     }
 
     public ParamSource buildParamSource(Parameter parameter, Class<?> initValueType, ValueMeta[] forwardReturnValueMetas,
-                                        GlobalValueMeta[] globalValueClasses) {
+                                        GlobalValueMeta<?>[] globalValueClasses) {
         String paramName = buildParamName(parameter);
         Type paramType = parameter.getParameterizedType();
 
@@ -68,7 +68,7 @@ public class NodeMetaFactory {
         // 全局字段
         for (int i = 0; i < globalValueClasses.length; i++) {
             if (globalValueClasses[i] != null && paramMatcher.match(paramName, paramType, globalValueClasses[i])) {
-                return new GlobalValueFieldSource(paramType, i);
+                return new GlobalValueSource(paramType, i);
             }
         }
         throw new BuildException("not match param, name:" + paramName + ", type:" + paramType);
@@ -79,9 +79,6 @@ public class NodeMetaFactory {
         Param annotation = parameter.getAnnotation(Param.class);
         if (annotation != null && StringUtils.isNotBlank(annotation.valueKey())) {
             return annotation.valueKey();
-        }
-        if (parameter.isNamePresent()) {
-            return parameter.getName();
         }
         return null;
     }

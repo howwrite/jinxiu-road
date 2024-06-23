@@ -51,7 +51,7 @@ public abstract class BasePipelineExecutor implements PipelineExecutor {
     }
 
     public Object[] buildGlobalValues(@Nonnull PipelineMeta pipelineMeta) {
-        GlobalValueMeta[] globalValueMetas = pipelineMeta.getGlobalValueMetas();
+        GlobalValueMeta<?>[] globalValueMetas = pipelineMeta.getGlobalValueMetas();
         Object[] globalValues = new Object[globalValueMetas.length];
         for (int i = 0; i < globalValueMetas.length; i++) {
             globalValues[i] = globalValueMetas[i].getGlobalValueSupplier().get();
